@@ -9,7 +9,8 @@ public class Main {
         //ejerciciosColas();
         //ejerciciosColaPrioridad();
         //practicaParcial2();
-        practicaParcial3();
+        //practicaParcial3();
+        practicaParcial4();
     }
 
     public static void pasar(PilaTDA p1, PilaTDA p2) {
@@ -241,6 +242,10 @@ public class Main {
 
 
     public static void ejercicioParcial(){
+        //1.Una empresa desea identificar las diferencias de registros de operaciones de sus clientes en sus dos bases
+        // de datos. Para ello dispone de información de registros de operaciones en dos bases de datos que contienen
+        // la siguiente información: NroCliente, y registros de operaciones bancarias realizadas, las mismas no pueden
+        // repetirse en un mismo cliente, pero si en clientes distintos.
 
         DiccionarioMultipleTDA d1 = new DicMultipleL();
         DiccionarioMultipleTDA d2 = new DicMultipleL();
@@ -294,6 +299,12 @@ public class Main {
 
 
         public static void practicaParcial2(){
+            //Se guarda una lista de curso con la cantidad de estudiantes inscriptos (el curso no
+            //se repite)
+
+            // Pasar la información a otro TDA capaz de almacenar inscriptos, y cursos que
+            //tengan dicha cantidad de inscriptos
+
             DiccionarioMultipleTDA d1 = new DicMultipleL();
 
             d1.inicializarDiccionario();
@@ -336,6 +347,10 @@ public class Main {
     }
 
     public static void practicaParcial3(){
+
+        // en un diccionario multiple se guardan los legajos de los alumnos , se necesita copiar esa informacion a un
+        // tda adecuado que permita almacenar la informacion pero ordenada por nota en forma decreciente
+
         DiccionarioMultipleTDA d1 = new DicMultipleL();
         d1.inicializarDiccionario();
         d1.agregar(1,10);
@@ -344,6 +359,51 @@ public class Main {
         d1.agregar(2,8);
         mostrar(d1,"notas");
         mostrar(ordenarDiccionarioDecreciente(d1),"ordenado");
+    }
+
+
+    public static DiccionarioMultipleTDA ordenarValoresClave(DiccionarioMultipleTDA d1){
+        DiccionarioMultipleTDA retorno = new DicMultipleL();
+        retorno.inicializarDiccionario();
+        ColaPrioridadTDA cola = new ColaPrioridadLD();
+
+        ConjuntoTDA claves = d1.claves();
+
+        while(!claves.conjuntoVacio()) {
+            int clave = claves.elegir();
+            ConjuntoTDA valores = d1.recuperar(clave);
+            while(!valores.conjuntoVacio()) {
+                int valor = valores.elegir();
+                cola.acolarPrioridad(valor,valor);
+                valores.sacar(valor);
+            }
+
+            while(!cola.colaVacia()){
+                int primero = cola.primero();
+
+                retorno.agregar(clave,primero);
+                cola.desacolar();
+            }
+
+            claves.sacar(clave);
+        }
+
+        return retorno;
+
+    }
+
+
+    public static void practicaParcial4(){
+        DiccionarioMultipleTDA d1 = new DicMultipleL();
+        d1.inicializarDiccionario();
+        d1.agregar(1,100);
+        d1.agregar(1,105);
+        d1.agregar(1,250);
+        d1.agregar(1,90);
+
+        mostrar(d1,"precios");
+        mostrar(ordenarValoresClave(d1),"ordenado");
+
     }
 
 
